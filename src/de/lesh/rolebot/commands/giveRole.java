@@ -29,21 +29,20 @@ public class giveRole extends ListenerAdapter{
 		String role = e.getMessage().getRawContent().split("\\s+", 2)[1];
 		EmbedBuilder eB = new EmbedBuilder();
 		
-		
 		switch(role){
 			case "beginner" :  {
 				e.getGuild().getController().addRolesToMember(member, beginnerID).queue();
 				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
 				break;
-			}			//.getRoleById(316125948544155649L).;
+			}
 			case "medium" : {
 				e.getGuild().getController().addRolesToMember(member, mediumID).queue();
-				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
+				System.out.println("[UPGRADE] >> Added <Medium> to " + member);
 				break;
 			}	
 			case "profi" : {
 				e.getGuild().getController().addRolesToMember(member, profiID).queue();
-				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
+				System.out.println("[UPGRADE] >> Added <Profi> to " + member);
 				break;
 			}	
 			default : {
