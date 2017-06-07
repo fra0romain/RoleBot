@@ -1,6 +1,9 @@
 package de.lesh.rolebot.commands;
 
+import java.awt.Color;
+
 import de.lesh.rolebot.user.bannedList;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
@@ -19,9 +22,13 @@ public class giveRole extends ListenerAdapter{
 			return;
 		}
 		
+		Role beginnerID = e.getJDA().getRoleById(316125948544155649L);
+		Role mediumID = e.getJDA().getRoleById(322077001014050817L);
+		Role profiID = e.getJDA().getRoleById(322076854955671563L);
 		
-		Role beginnerID = e.getGuild().getRoleById(316125948544155649L);
 		String role = e.getMessage().getRawContent().split("\\s+", 2)[1];
+		EmbedBuilder eB = new EmbedBuilder();
+		
 		
 		switch(role){
 			case "beginner" :  {
@@ -29,11 +36,23 @@ public class giveRole extends ListenerAdapter{
 				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
 				break;
 			}			//.getRoleById(316125948544155649L).;
-			case "medium" : 
+			case "medium" : {
+				e.getGuild().getController().addRolesToMember(member, mediumID).queue();
+				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
 				break;
-			case "profi" : 
+			}	
+			case "profi" : {
+				e.getGuild().getController().addRolesToMember(member, profiID).queue();
+				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
 				break;
-			default : e.getChannel().sendMessage("Die angegebene Gruppe ist nicht vorhanden. \n Bitte wähle zwischen beginner , medium oder profi").queue();
+			}	
+			default : {
+				eB.setAuthor("ERROR > Cant find role", null, user.getEffectiveAvatarUrl());
+				eB.addField("", "Die angegebene Rolle steht nicht zur auswahl", false);
+				eB.addField("**Solution**", "Nutzen sie >> .r (beginner|medium|profi)", false);
+				eB.setColor(Color.RED);
+				e.getChannel().sendMessage(eB.build()).queue();
+			}		
 		}
 	}
 }

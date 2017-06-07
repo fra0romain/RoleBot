@@ -16,10 +16,9 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		
-		jdaB.setToken(bot_token.BOT_TOKEN).setGame(Game.of("-help")).setAutoReconnect(true);
+		jdaB.setToken(bot_token.BOT_TOKEN).setGame(Game.of(".r (role)")).setAutoReconnect(true);
 		jdaB.addEventListener(new giveRole());
 
-		
 		jda = jdaB.buildBlocking();
 		
 	}
