@@ -1,10 +1,9 @@
 package de.lesh.rolebot.commands;
 
 import java.awt.Color;
-import java.awt.List;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 
+import de.lesh.rolebot.role.Beginner;
 import de.lesh.rolebot.user.bannedList;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -18,35 +17,58 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class giveRole extends ListenerAdapter{
 
-	public void onMessageReceived(MessageReceivedEvent e, GuildMemberAddHandler add, GuildMemberRemoveHandler rem){
+	Role beginnerID = null;
+	Role mediumID = null;
+	Role profiID = null;
+	
+	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
 		User user = e.getAuthor();
 		Member member = e.getMember();
 		
-		if(!msg.getRawContent().startsWith(".r") || bannedList.black.contains(e.getAuthor().getIdLong()) || e.getAuthor().isBot()) {
+		if(!msg.getRawContent().startsWith(".r") || e.getAuthor().isBot()) {
 			return;
 		}
 		
-		Role beginnerID = e.getJDA().getRoleById(316125948544155649L);
-		Role mediumID = e.getJDA().getRoleById(316125835323113472L);
-		Role profiID = e.getJDA().getRoleById(316125663226626048L);
+		beginnerID = e.getJDA().getRoleById(316125948544155649L);
+		mediumID = e.getJDA().getRoleById(316125835323113472L);
+		profiID = e.getJDA().getRoleById(316125663226626048L);
 		
 		String role = e.getMessage().getRawContent().split("\\s+", 2)[1];
 		EmbedBuilder eB = new EmbedBuilder();
 		
 		switch(role){
 			case "beginner" :  {
-				e.getGuild().getController().modifyMemberRoles(member, beginnerID, profiID).queue();
+				e.getGuild().getController().modifyMemberRoles(member, Arrays.asList(beginnerID), Arrays.asList(mediumID, profiID)).queue();
+				eB.setAuthor("ROLE UPDATE >> " + user.getName(), null, user.getEffectiveAvatarUrl());
+				eB.addField("New Role","" + beginnerID.getName(), false);
+				eB.addBlankField(false);
+				eB.addField("Old Role", this.getOldRole(member), false);
+				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
+				eB.setColor(Color.GREEN);
+				e.getChannel().sendMessage(eB.build()).queue();
 				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
 				break;
 			}
 			case "medium" : {
-				e.getGuild().getController().modifyMemberRoles(member, mediumID, profiID, beginnerID).queue();
+				e.getGuild().getController().modifyMemberRoles(member, Arrays.asList(mediumID), Arrays.asList(beginnerID, profiID)).queue();
+				eB.setAuthor("ROLE UPDATE >> " + user.getName(), null, user.getEffectiveAvatarUrl());
+				eB.addField("New Role","" + mediumID.getName(), true);
+				eB.addField("Old Role", this.getOldRole(member), false);
+				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
+				eB.setColor(Color.GREEN);
+				e.getChannel().sendMessage(eB.build()).queue();
 				System.out.println("[UPGRADE] >> Added <Medium> to " + member);
 				break;
 			}	
 			case "profi" : {
-				e.getGuild().getController().modifyMemberRoles(member, profiID, beginnerID, mediumID).queue();
+				e.getGuild().getController().modifyMemberRoles(member, Arrays.asList(profiID), Arrays.asList(beginnerID, mediumID)).queue();
+				eB.setAuthor("ROLE UPDATE >> " + user.getName(), null, user.getEffectiveAvatarUrl());
+				eB.addField("New Role","" + profiID.getName(), true);
+				eB.addField("Old Role", this.getOldRole(member), false);
+				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
+				eB.setColor(Color.GREEN);
+				e.getChannel().sendMessage(eB.build()).queue();
 				System.out.println("[UPGRADE] >> Added <Profi> to " + member);
 				break;
 			}	
@@ -58,6 +80,20 @@ public class giveRole extends ListenerAdapter{
 				e.getChannel().sendMessage(eB.build()).queue();
 			}		
 		}
+	}
+	
+	
+	private String getOldRole(Member member) {		
+		for(Role role : member.getRoles()) {
+	        if (role.getName().toLowerCase().contains("beginner")) {
+	            return beginnerID.getName();
+	        }else if (role.getName().toLowerCase().contains("medium")) {
+	            return mediumID.getName();
+	        }else if (role.getName().toLowerCase().contains("profi")) {
+	            return profiID.getName();
+	        };
+		}   
+		return "";
 	}
 }
 

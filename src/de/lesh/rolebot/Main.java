@@ -20,7 +20,7 @@ public class Main {
 		jdaB.addEventListener(new giveRole());
 
 		jda = jdaB.buildBlocking();
-		
+		System.out.println("[SUCCESSFUL] >> Bot is running");
 	}
 	public static JDA getSetup(){
 		return jda;
