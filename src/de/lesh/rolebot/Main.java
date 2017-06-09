@@ -12,15 +12,16 @@ public class Main {
 	
 	public static JDA jda;
 	public static JDABuilder jdaB = new JDABuilder(AccountType.BOT);
-	public static int sentMSG = 0;
 	
 	public static void main(String[] args) throws Exception {
+		System.out.println("[BOOT] >> Launching RoleBot");
+		System.out.println("[BOOT] >> Version: " + lib.version);
 		
 		jdaB.setToken(bot_token.BOT_TOKEN).setGame(Game.of(".r (role)")).setAutoReconnect(true);
 		jdaB.addEventListener(new giveRole());
-
+		System.out.println("[SUCCESSFUL] >> Added all EventListeners");
 		jda = jdaB.buildBlocking();
-		System.out.println("[SUCCESSFUL] >> Bot is running");
+		System.out.println("[SUCCESSFUL] >> Activating RoleBot");
 	}
 	public static JDA getSetup(){
 		return jda;

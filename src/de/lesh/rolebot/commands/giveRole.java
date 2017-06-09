@@ -25,6 +25,7 @@ public class giveRole extends ListenerAdapter{
 		Message msg = e.getMessage();
 		User user = e.getAuthor();
 		Member member = e.getMember();
+		EmbedBuilder eB = new EmbedBuilder();
 		
 		if(!msg.getRawContent().startsWith(".r") || e.getAuthor().isBot()) {
 			return;
@@ -34,8 +35,18 @@ public class giveRole extends ListenerAdapter{
 		mediumID = e.getJDA().getRoleById(316125835323113472L);
 		profiID = e.getJDA().getRoleById(316125663226626048L);
 		
-		String role = e.getMessage().getRawContent().split("\\s+", 2)[1];
-		EmbedBuilder eB = new EmbedBuilder();
+		// role = e.getMessage().getRawContent().split("\\s+", 2)[1];
+		String[] split = e.getMessage().getRawContent().split("\\s+", 2);
+		if (split.length < 2) {
+			eB.setAuthor("ERROR >> Missing variable", null, user.getEffectiveAvatarUrl());
+			eB.addField("", "Der Command braucht eine weitere Variable", false);
+			eB.addField("**Solution**", "Nutzen sie >> .r (beginner|medium|profi)", false);
+			eB.setColor(Color.RED);
+			e.getChannel().sendMessage(eB.build()).queue();
+			System.out.println("[ERROR] >> Missing variable - Command performed by " + user);
+		    return;
+		}
+		String role = split[1];
 		
 		switch(role){
 			case "beginner" :  {
@@ -73,27 +84,21 @@ public class giveRole extends ListenerAdapter{
 				break;
 			}	
 			default : {
-				eB.setAuthor("ERROR > Cant find role", null, user.getEffectiveAvatarUrl());
+				eB.setAuthor("ERROR >> Wrong role name", null, user.getEffectiveAvatarUrl());
 				eB.addField("", "Die angegebene Rolle steht nicht zur auswahl", false);
 				eB.addField("**Solution**", "Nutzen sie >> .r (beginner|medium|profi)", false);
 				eB.setColor(Color.RED);
 				e.getChannel().sendMessage(eB.build()).queue();
+				System.out.println("[ERROR] >> Wrong role name - Command performed by " + user);
 			}		
 		}
-	}
-	
-	
+	}	
 	private String getOldRole(Member member) {		
 		for(Role role : member.getRoles()) {
-	        if (role.getName().toLowerCase().contains("beginner")) {
-	            return beginnerID.getName();
-	        }else if (role.getName().toLowerCase().contains("medium")) {
-	            return mediumID.getName();
-	        }else if (role.getName().toLowerCase().contains("profi")) {
-	            return profiID.getName();
-	        };
-		}   
-		return "";
+	        if (role.getName().toLowerCase().contains("beginner")) { return beginnerID.getName(); } 
+	        else if (role.getName().toLowerCase().contains("medium")) { return mediumID.getName(); }
+	        else if (role.getName().toLowerCase().contains("profi")) { return profiID.getName(); };
+		}return "";
 	}
 }
 
