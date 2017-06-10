@@ -2,17 +2,12 @@ package de.lesh.rolebot.commands;
 
 import java.awt.Color;
 import java.util.Arrays;
-
-import de.lesh.rolebot.role.Beginner;
-import de.lesh.rolebot.user.bannedList;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.handle.GuildMemberAddHandler;
-import net.dv8tion.jda.core.handle.GuildMemberRemoveHandler;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class giveRole extends ListenerAdapter{
@@ -48,7 +43,7 @@ public class giveRole extends ListenerAdapter{
 		}
 		String role = split[1];
 		
-		switch(role){
+		switch(role.toLowerCase()){
 			case "beginner" :  {
 				e.getGuild().getController().modifyMemberRoles(member, Arrays.asList(beginnerID), Arrays.asList(mediumID, profiID)).queue();
 				eB.setAuthor("ROLE UPDATE >> " + user.getName(), null, user.getEffectiveAvatarUrl());

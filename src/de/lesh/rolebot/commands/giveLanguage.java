@@ -1,6 +1,9 @@
 package de.lesh.rolebot.commands;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -13,6 +16,22 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 
 public class giveLanguage extends ListenerAdapter {
+	
+	private final static Map<String, Long> languages = new HashMap<>();
+    static {
+        languages.put("java", 316323991646109698L);
+        languages.put("c++", 316324124832301076L);
+        languages.put("c#", 316324077533003786L);
+        languages.put("python", 316324218482589696L);
+        languages.put("php", 316324736806420480L);
+        languages.put("javascript", 321762279244955658L);
+        languages.put("lua", 323140804941971456L);
+        languages.put("html5", 323145144620548096L);
+        //languages.put("vb.net", 0L);
+        languages.put("css", 323145260488327170L);
+        languages.put("assembler", 323145448993062925L);
+    }
+	
     private void showError(MessageReceivedEvent e)
     {
         EmbedBuilder eB = new EmbedBuilder();
@@ -30,13 +49,14 @@ public class giveLanguage extends ListenerAdapter {
             return;
         }
 
+        e.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
         EmbedBuilder eB = new EmbedBuilder();
 
         String[] split = e.getMessage().getRawContent().split("\\s+", 2);
         if (split.length < 2) {
-            eB.setAuthor("ERROR >> Missing variable", null, user.getEffectiveAvatarUrl());
-            eB.addField("", "Der Command braucht eine weitere Variable", false);
-            eB.addField("**Solution**", "Infos unter >> .l help", false);
+            eB.setAuthor("ERROR >> Missing argument", null, user.getEffectiveAvatarUrl());
+            eB.addField("", "The command is missing an argument", false);
+            eB.addField("**Solution**", "Infos >> .l help", false);
             eB.setColor(Color.RED);
             e.getChannel().sendMessage(eB.build()).queue();
             System.out.println("[ERROR] >> Missing variable - Command performed by " + user);
@@ -48,7 +68,7 @@ public class giveLanguage extends ListenerAdapter {
         if (arg.equals("help")) {
             eB.setAuthor("HELP", null, user.getEffectiveAvatarUrl());
             eB.addField("Usage", ".l help\n.l (add|remove) <language>", false);
-            eB.addField("Available Languages:", "java, c++, c#, python, php, javascript", false);
+            eB.addField("Available Languages:", String.join(", ", languages.keySet()), false);
             e.getChannel().sendMessage(eB.build()).queue();
             System.out.println("[INFO] >> Used command: .l help - Command performed by " + user);
             return;
@@ -64,54 +84,36 @@ public class giveLanguage extends ListenerAdapter {
         BiConsumer<Member, Role> modify;
         switch (split[0].toLowerCase()) {
 	        case "add":
-	        	modify = (m, r) -> e.getGuild().getController().addRolesToMember(m, r).queue();
-	            eB.addField("New Language", "You've added a new language", true);
-	            e.getChannel().sendMessage(eB.build()).queue();
+	        	modify = (m, r) -> {
+	        		e.getGuild().getController().addRolesToMember(m, r).queue();
+	        		eB.addField("New Language >> " + r.getName(), user.getName() + " added " + r.getName() + " to their languages", true);
+	        		eB.setColor(Color.GREEN);
+	        		e.getChannel().sendMessage(eB.build()).queue();
+	        		System.out.println("[SUCCESFUL] >> Added language " + r.getName() + " to " + user);
+	        	};
 	            break;
 	        case "remove":
-	        	modify = (m, r) -> e.getGuild().getController().removeRolesFromMember(m, r).queue();
-	            eB.addField("Remove Language", "You've removed an language", true);
-	            e.getChannel().sendMessage(eB.build()).queue();
-	            break;
+	        	modify = (m, r) -> { 
+	        		e.getGuild().getController().removeRolesFromMember(m, r).queue();
+	        		eB.addField("Remove Language >> " + r.getName(), user.getName() + " removed " + r.getName() + " from their languages", true);
+	        		eB.setColor(Color.RED);
+	        		e.getChannel().sendMessage(eB.build()).queue();
+	        		System.out.println("[SUCCESFUL] >> Removed language " + r.getName() + " from " + user);
+	        	};
+	        	break;
 	        default:
 	            showError(e);
 	            return;
         }
-
-        switch (split[1].toLowerCase()) {
-	        case "java": {
-	            modify.accept(member, e.getGuild().getRoleById(316323991646109698L));
-	            System.out.println("[SUCCESSFUL] >> Added/removed language <java> to " + user);
-	            break;
-	        }
-	        case "c++": {
-	            modify.accept(member, e.getGuild().getRoleById(316324124832301076L));
-	            System.out.println("[SUCCESSFUL] >> Added/removed language <c++> to " + user);
-	            break;
-	        }
-	        case "c#": {
-	            modify.accept(member, e.getGuild().getRoleById(316324077533003786L));
-	            System.out.println("[SUCCESSFUL] >> Added/removed language <c#> to " + user);
-	            break;
-	        }
-	        case "python": {
-	            modify.accept(member, e.getGuild().getRoleById(316324218482589696L));
-	            System.out.println("[SUCCESSFUL] >> Added/removed language <python> to " + user);
-	            break;
-	        }
-	        case "php": {
-	            modify.accept(member, e.getGuild().getRoleById(316324736806420480L));
-	            System.out.println("[SUCCESSFUL] >> Added/removed language <php> to " + user);
-	            break;
-	        }
-	        case "javascript": {
-	            modify.accept(member, e.getGuild().getRoleById(321762279244955658L));
-	            System.out.println("[SUCCESSFUL] >> Added/removed language <javascript> to " + user);
-	            break;
-	        }
-	        default: {
-	            eB.setAuthor("", null, user.getEffectiveAvatarUrl());
-	        }
+        
+        Long roleId = languages.get(split[1].toLowerCase());
+        if (roleId == null) {
+            eB.addField("ERROR >> Unknown language", user.getName() + " > I dont know this language", true);
+            eB.setColor(Color.RED);
+            e.getChannel().sendMessage(eB.build()).queue();
+            System.out.println("[ERROR] >> Unknown language - Command performed by " + user);
+            return;
         }
+        modify.accept(member, e.getGuild().getRoleById(roleId));
     }
 }
