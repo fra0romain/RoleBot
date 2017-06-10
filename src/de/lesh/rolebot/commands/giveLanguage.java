@@ -25,7 +25,7 @@ public class giveLanguage extends ListenerAdapter{
 		EmbedBuilder eB = new EmbedBuilder();
 		
 		String[] split = e.getMessage().getRawContent().split("\\s+", 3);
-		if (split.length < 2) {
+		if (split.length < 3) {
 			eB.setAuthor("ERROR >> Missing variable", null, user.getEffectiveAvatarUrl());
 			eB.addField("", "Der Command braucht eine weitere Variable", false);
 			eB.addField("**Solution**", "Infos unter >> .l all", false);
