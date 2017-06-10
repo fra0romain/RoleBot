@@ -13,7 +13,6 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 
 public class giveLanguage extends ListenerAdapter {
-
     private void showError(MessageReceivedEvent e)
     {
         EmbedBuilder eB = new EmbedBuilder();
