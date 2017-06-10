@@ -8,21 +8,23 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class giveLanguage {
+
+public class giveLanguage extends ListenerAdapter{
 
 	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
 		User user = e.getAuthor();
 		Member member = e.getMember();
 		
-		if(!msg.getRawContent().startsWith(".l") || !permittedList.perm.contains(e.getAuthor().getIdLong()) || e.getAuthor().isBot()) {
+		if(!msg.getRawContent().startsWith(".l") || e.getAuthor().isBot()) {
 			return;
 		}
 		
 		EmbedBuilder eB = new EmbedBuilder();
 		
-		String[] split = e.getMessage().getRawContent().split("\\s+", 2);
+		String[] split = e.getMessage().getRawContent().split("\\s+", 3);
 		if (split.length < 2) {
 			eB.setAuthor("ERROR >> Missing variable", null, user.getEffectiveAvatarUrl());
 			eB.addField("", "Der Command braucht eine weitere Variable", false);
