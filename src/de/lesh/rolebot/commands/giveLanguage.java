@@ -53,6 +53,7 @@ public class giveLanguage extends ListenerAdapter{
 			case "add" : {
 				switch(lang){
 					case "java" : {
+						System.out.println("HEY");
 						break;
 					}
 					case "c++" : {
