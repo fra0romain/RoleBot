@@ -20,97 +20,12 @@ public class giveLanguage extends ListenerAdapter {
         eB.addField("You used the command wrongly", "To display help, type\".l help\"", false);
         e.getChannel().sendMessage(eB.build()).queue();
     }
-    public void onMessageReceived(MessageReceivedEvent e) {
-        Message msg = e.getMessage();
-        User user = e.getAuthor();
-        Member member = e.getMember();
 
-<<<<<<< HEAD
 	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
 		User user = e.getAuthor();
 		Member member = e.getMember();
 		
-		if(!msg.getRawContent().startsWith(".l") || e.getAuthor().isBot()) {
-			return;
-		}
-		
-		EmbedBuilder eB = new EmbedBuilder();
-		
-		String[] split = e.getMessage().getRawContent().split("\\s+", 3);
-		if (split.length < 3) {
-			eB.setAuthor("ERROR >> Missing variable", null, user.getEffectiveAvatarUrl());
-			eB.addField("", "Der Command braucht eine weitere Variable", false);
-			eB.addField("**Solution**", "Infos unter >> .l all", false);
-			eB.setColor(Color.RED);
-			e.getChannel().sendMessage(eB.build()).queue();
-			System.out.println("[ERROR] >> Missing variable - Command performed by " + user);
-		    return;
-		}
-		String give = split[1];
-		String lang = split[2];
-		
-		switch(give){
-			case "all" : {
-					eB.setAuthor("ALL LANGUAGES", null, user.getEffectiveAvatarUrl());
-					eB.addField("Java", "ADD: .l add java | REMOVE: .l remove java", false);
-					eB.addField("C++", "ADD: .l add c++ | REMOVE: .l remove c++", false);
-					eB.addField("C#", "ADD: .l add c# | REMOVE: .l remove c#", false);
-					eB.addField("Python", "ADD: .l add python | REMOVE: .l remove python", false);
-					eB.addField("PHP", "ADD: .l add php | REMOVE: .l remove php", false);
-					eB.addField("JavaScript", "ADD: .l add javascript | REMOVE: .l remove javascript", false);
-					e.getChannel().sendMessage(eB.build()).queue();
-					System.out.println("Showing all commands");
-				break;
-			}
-			case "add" : {
-				switch(lang){
-					case "java" : {
-						System.out.println("HEY");
-						break;
-					}
-					case "c++" : {
-						break;
-					}
-					case "c#" : {
-						break;
-					}
-					case "python" : {
-						break;
-					}
-					case "php" : {
-						break;
-					}
-					case "javascript" : {
-						break;
-					}
-				}
-			}
-			case "remove" : {
-				switch(lang){
-					case "java" : {
-						break;
-					}
-					case "c++" : {
-						break;
-					}
-					case "c#" : {
-						break;
-					}
-					case "python" : {
-						break;
-					}
-					case "php" : {
-						break;
-					}
-					case "javascript" : {
-						break;
-					}
-				}
-			}
-		}
-	}
-=======
         if (!msg.getRawContent().startsWith(".l") || e.getAuthor().isBot()) {
             return;
         }
@@ -132,10 +47,10 @@ public class giveLanguage extends ListenerAdapter {
 
         if (arg.equals("help")) {
             eB.setAuthor("HELP", null, user.getEffectiveAvatarUrl());
-            eB.addField("Usage", ".l help\n.l (add|remove) <lamguage>", false);
-            eB.addField("Available Languages:", "Java, C++, C#, Python, PHP, JavaScript", false);
+            eB.addField("Usage", ".l help\n.l (add|remove) <language>", false);
+            eB.addField("Available Languages:", "java, c++, c#, python, php, javascript", false);
             e.getChannel().sendMessage(eB.build()).queue();
-            System.out.println("Showing help");
+            System.out.println("[INFO] >> Used command: .l help - Command performed by " + user);
             return;
         }
 
@@ -147,47 +62,56 @@ public class giveLanguage extends ListenerAdapter {
         }
 
         BiConsumer<Member, Role> modify;
-        switch (arg) {
-        case "add":
-            modify = e.getGuild().getController()::addRolesToMember;
-            break;
-        case "remove":
-            modify = e.getGuild().getController()::removeRolesFromMember;
-            break;
-        default:
-            showError(e);
-            return;
+        switch (split[0].toLowerCase()) {
+	        case "add":
+	        	modify = (m, r) -> e.getGuild().getController().addRolesToMember(m, r).queue();
+	            eB.addField("New Language", "You've added a new language", true);
+	            e.getChannel().sendMessage(eB.build()).queue();
+	            break;
+	        case "remove":
+	        	modify = (m, r) -> e.getGuild().getController().removeRolesFromMember(m, r).queue();
+	            eB.addField("Remove Language", "You've removed an language", true);
+	            e.getChannel().sendMessage(eB.build()).queue();
+	            break;
+	        default:
+	            showError(e);
+	            return;
         }
 
         switch (split[1].toLowerCase()) {
-        case "java": {
-            modify.accept(member, e.getGuild().getRoleById(0L /* Here java role id */));
-            break;
-        }
-        case "c++": {
-            modify.accept(member, e.getGuild().getRoleById(0L /* Here c++ role id */));
-            break;
-        }
-        case "c#": {
-            modify.accept(member, e.getGuild().getRoleById(0L /* Here c# role id */));
-            break;
-        }
-        case "python": {
-            modify.accept(member, e.getGuild().getRoleById(0L /* Here python role id */));
-            break;
-        }
-        case "php": {
-            modify.accept(member, e.getGuild().getRoleById(0L /* Here php role id */));
-            break;
-        }
-        case "javascript": {
-            modify.accept(member, e.getGuild().getRoleById(0L /* Here javascript role id */));
-            break;
-        }
-        default: {
-            // here build message for invalid language
-        }
+	        case "java": {
+	            modify.accept(member, e.getGuild().getRoleById(316323991646109698L));
+	            System.out.println("[SUCCESSFUL] >> Added/removed language <java> to " + user);
+	            break;
+	        }
+	        case "c++": {
+	            modify.accept(member, e.getGuild().getRoleById(316324124832301076L));
+	            System.out.println("[SUCCESSFUL] >> Added/removed language <c++> to " + user);
+	            break;
+	        }
+	        case "c#": {
+	            modify.accept(member, e.getGuild().getRoleById(316324077533003786L));
+	            System.out.println("[SUCCESSFUL] >> Added/removed language <c#> to " + user);
+	            break;
+	        }
+	        case "python": {
+	            modify.accept(member, e.getGuild().getRoleById(316324218482589696L));
+	            System.out.println("[SUCCESSFUL] >> Added/removed language <python> to " + user);
+	            break;
+	        }
+	        case "php": {
+	            modify.accept(member, e.getGuild().getRoleById(316324736806420480L));
+	            System.out.println("[SUCCESSFUL] >> Added/removed language <php> to " + user);
+	            break;
+	        }
+	        case "javascript": {
+	            modify.accept(member, e.getGuild().getRoleById(321762279244955658L));
+	            System.out.println("[SUCCESSFUL] >> Added/removed language <javascript> to " + user);
+	            break;
+	        }
+	        default: {
+	            eB.setAuthor("", null, user.getEffectiveAvatarUrl());
+	        }
         }
     }
->>>>>>> origin/master
 }
