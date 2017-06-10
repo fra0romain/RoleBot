@@ -1,5 +1,6 @@
 package de.lesh.rolebot;
 
+import de.lesh.rolebot.commands.giveLanguage;
 import de.lesh.rolebot.commands.giveRole;
 import de.lesh.rolebot.user.permittedList;
 import net.dv8tion.jda.core.AccountType;
@@ -19,6 +20,7 @@ public class Main {
 		
 		jdaB.setToken(bot_token.BOT_TOKEN).setGame(Game.of(".r (role)")).setAutoReconnect(true);
 		jdaB.addEventListener(new giveRole());
+		jdaB.addEventListener(new giveLanguage());
 		System.out.println("[SUCCESSFUL] >> Added all EventListeners");
 		jda = jdaB.buildBlocking();
 		System.out.println("[SUCCESSFUL] >> Activating RoleBot");

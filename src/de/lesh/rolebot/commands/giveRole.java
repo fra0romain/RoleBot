@@ -53,7 +53,6 @@ public class giveRole extends ListenerAdapter{
 				e.getGuild().getController().modifyMemberRoles(member, Arrays.asList(beginnerID), Arrays.asList(mediumID, profiID)).queue();
 				eB.setAuthor("ROLE UPDATE >> " + user.getName(), null, user.getEffectiveAvatarUrl());
 				eB.addField("New Role","" + beginnerID.getName(), false);
-				eB.addBlankField(false);
 				eB.addField("Old Role", this.getOldRole(member), false);
 				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
 				eB.setColor(Color.GREEN);
@@ -98,7 +97,7 @@ public class giveRole extends ListenerAdapter{
 	        if (role.getName().toLowerCase().contains("beginner")) { return beginnerID.getName(); } 
 	        else if (role.getName().toLowerCase().contains("medium")) { return mediumID.getName(); }
 	        else if (role.getName().toLowerCase().contains("profi")) { return profiID.getName(); };
-		}return "";
+		}return "Keine vorherige Rolle vorhanden";
 	}
 }
 
