@@ -3,7 +3,7 @@ package de.lesh.rolebot;
 public class lib {
 
 	public static final String bot_name = "RoleBot";
-	public static final String version = "1.1.9.1";
+	public static final String version = "1.2.0";
 	
 	public static final String bot_image = "http://leshdev.tk/bot/img/kuhlProgramming.png";
 	

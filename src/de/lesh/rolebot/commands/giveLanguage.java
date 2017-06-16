@@ -17,6 +17,8 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class giveLanguage extends ListenerAdapter {
 	
+	String OS = "os.name";
+	
 	private final static Map<String, Long> languages = new HashMap<>();
     static {
         languages.put("java", 316323991646109698L);
@@ -37,6 +39,7 @@ public class giveLanguage extends ListenerAdapter {
         EmbedBuilder eB = new EmbedBuilder();
         eB.setAuthor("ERROR", null, e.getAuthor().getEffectiveAvatarUrl());
         eB.addField("You used the command wrongly", "To display help, type\".l help\"", false);
+		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
         e.getChannel().sendMessage(eB.build()).queue();
     }
 
@@ -57,6 +60,7 @@ public class giveLanguage extends ListenerAdapter {
             eB.setAuthor("ERROR >> Missing argument", null, user.getEffectiveAvatarUrl());
             eB.addField("", "The command is missing an argument", false);
             eB.addField("**Solution**", "Infos >> .l help", false);
+    		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
             eB.setColor(Color.RED);
             e.getChannel().sendMessage(eB.build()).queue();
             System.out.println("[ERROR] >> Missing variable - Command performed by " + user);
@@ -69,6 +73,7 @@ public class giveLanguage extends ListenerAdapter {
             eB.setAuthor("HELP", null, user.getEffectiveAvatarUrl());
             eB.addField("Usage", ".l help\n.l (add|remove) <language>", false);
             eB.addField("Available Languages:", String.join(", ", languages.keySet()), false);
+    		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
             e.getChannel().sendMessage(eB.build()).queue();
             System.out.println("[INFO] >> Used command: .l help - Command performed by " + user);
             return;
@@ -87,6 +92,7 @@ public class giveLanguage extends ListenerAdapter {
 	        	modify = (m, r) -> {
 	        		e.getGuild().getController().addRolesToMember(m, r).queue();
 	        		eB.addField("New Language >> " + r.getName(), user.getName() + " added " + r.getName() + " to their languages", true);
+	        		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
 	        		eB.setColor(Color.GREEN);
 	        		e.getChannel().sendMessage(eB.build()).queue();
 	        		System.out.println("[SUCCESFUL] >> Added language " + r.getName() + " to " + user);
@@ -96,6 +102,7 @@ public class giveLanguage extends ListenerAdapter {
 	        	modify = (m, r) -> { 
 	        		e.getGuild().getController().removeRolesFromMember(m, r).queue();
 	        		eB.addField("Remove Language >> " + r.getName(), user.getName() + " removed " + r.getName() + " from their languages", true);
+	        		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
 	        		eB.setColor(Color.RED);
 	        		e.getChannel().sendMessage(eB.build()).queue();
 	        		System.out.println("[SUCCESFUL] >> Removed language " + r.getName() + " from " + user);
@@ -109,6 +116,7 @@ public class giveLanguage extends ListenerAdapter {
         Long roleId = languages.get(split[1].toLowerCase());
         if (roleId == null) {
             eB.addField("ERROR >> Unknown language", user.getName() + " > I dont know this language", true);
+    		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
             eB.setColor(Color.RED);
             e.getChannel().sendMessage(eB.build()).queue();
             System.out.println("[ERROR] >> Unknown language - Command performed by " + user);

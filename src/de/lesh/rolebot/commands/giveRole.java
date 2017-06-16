@@ -15,6 +15,7 @@ public class giveRole extends ListenerAdapter{
 	Role beginnerID = null;
 	Role mediumID = null;
 	Role profiID = null;
+	String OS = "os.name";
 	
 	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
@@ -36,6 +37,7 @@ public class giveRole extends ListenerAdapter{
 			eB.setAuthor("ERROR >> Missing variable", null, user.getEffectiveAvatarUrl());
 			eB.addField("", "Der Command braucht eine weitere Variable", false);
 			eB.addField("**Solution**", "Nutzen sie >> .r (beginner|medium|profi)", false);
+			eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
 			eB.setColor(Color.RED);
 			e.getChannel().sendMessage(eB.build()).queue();
 			System.out.println("[ERROR] >> Missing variable - Command performed by " + user);

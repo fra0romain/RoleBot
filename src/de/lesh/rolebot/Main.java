@@ -7,6 +7,7 @@ import de.lesh.rolebot.user.permittedList;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.events.ReadyEvent;
 
@@ -18,8 +19,9 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		System.out.println("[BOOT] >> Launching RoleBot");
 		System.out.println("[BOOT] >> Version: " + lib.version);
+		System.out.println("[INFO] >> Checking JDA Version: " + JDAInfo.VERSION);
 		
-		jdaB.setToken(bot_token.BOT_TOKEN).setGame(Game.of(".r (role)")).setAutoReconnect(true);
+		jdaB.setToken(bot_token.BOT_TOKEN).setGame(Game.of(".r (role) // .l (add/remove) (language)")).setAutoReconnect(true);
 		jdaB.addEventListener(new giveRole());
 		jdaB.addEventListener(new giveLanguage());
 		jdaB.addEventListener(new Information());
