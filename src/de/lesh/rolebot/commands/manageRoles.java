@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import de.lesh.rolebot.user.permittedList;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -20,6 +21,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 public class manageRoles extends ListenerAdapter{
 
 	String location = "roles.txt";
+	String OS = "os.name";
 	
 	final static Map<String, Long> languages = new HashMap<>();
     static {
@@ -39,26 +41,36 @@ public class manageRoles extends ListenerAdapter{
 	
 	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
+		EmbedBuilder eB = new EmbedBuilder();
 		
         if (msg.getRawContent().matches(".save")|| !e.getAuthor().isBot() || !permittedList.perm.contains(e.getAuthor().getIdLong())) {
       
-				FileWriter saveFile;
-				BufferedWriter out;
-				try {
-					saveFile = new FileWriter(location);
-					out = new BufferedWriter(saveFile);
-					Iterator<Entry<String, Long>> it = languages.entrySet().iterator();
-					
-					while(it.hasNext()) {
-						Entry<String, Long> pairs = it.next();
-				        System.out.println(pairs.getValue());
-				        out.write(pairs.getValue() + "\n");
-					}
-					out.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			FileWriter saveFile;
+			BufferedWriter out;
+			try {
+				saveFile = new FileWriter(location);
+				out = new BufferedWriter(saveFile);
+				for (Entry<String, Long> entry : languages.entrySet()) {
+				    out.write(entry.getValue() + ":" + entry.getKey() + "\n");
 				}
-        }  
+				System.out.println("[SUCCESFUL] >> Saved current language Map into " + location);
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+        }
+        if(msg.getRawContent().matches(".add")|| !e.getAuthor().isBot() || !permittedList.perm.contains(e.getAuthor().getIdLong())) {
+        	String[] split = e.getMessage().getRawContent().split("\\s+", 2);
+        	Long[] longSplit = e.getMessage().getRawContent();
+        	String name = split[1];
+        	String id = split[2];
+        	
+        	languages.put(name, id);
+        }
+        else {
+        	eB.addField("Fehler", "Du hast nicht die Berechtigung dafür", true);
+        	eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
+        	e.getChannel().sendMessage(eB.build()).queue();
+        }
 	}
 }
