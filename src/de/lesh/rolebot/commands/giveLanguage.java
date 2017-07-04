@@ -1,8 +1,6 @@
 package de.lesh.rolebot.commands;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
@@ -18,22 +16,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 public class giveLanguage extends ListenerAdapter {
 	
 	String OS = "os.name";
-	
-	private final static Map<String, Long> languages = new HashMap<>();
-    static {
-        languages.put("java", 316323991646109698L);
-        languages.put("c++", 316324124832301076L);
-        languages.put("c#", 316324077533003786L);
-        languages.put("python", 316324218482589696L);
-        languages.put("php", 316324736806420480L);
-        languages.put("javascript", 321762279244955658L);
-        languages.put("lua", 323140804941971456L);
-        languages.put("html5", 323145144620548096L);
-        //languages.put("vb.net", 0L);
-        languages.put("css", 323145260488327170L);
-        languages.put("assembler", 323145448993062925L);
-        languages.put("go", 330432150207725578L);
-    }
+
 	
     private void showError(MessageReceivedEvent e)
     {
@@ -73,7 +56,7 @@ public class giveLanguage extends ListenerAdapter {
         if (arg.equals("help")) {
             eB.setAuthor("HELP", null, user.getEffectiveAvatarUrl());
             eB.addField("Usage", ".l help\n.l (add|remove) <language>", false);
-            eB.addField("Available Languages:", String.join(", ", languages.keySet()), false);
+            eB.addField("Available Languages:", String.join(", ", manageRoles.languages.keySet()), false);
     		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
             e.getChannel().sendMessage(eB.build()).queue();
             System.out.println("[INFO] >> Used command: .l help - Command performed by " + user);
@@ -114,7 +97,7 @@ public class giveLanguage extends ListenerAdapter {
 	            return;
         }
         
-        Long roleId = languages.get(split[1].toLowerCase());
+        Long roleId = manageRoles.languages.get(split[1].toLowerCase());
         if (roleId == null) {
             eB.addField("ERROR >> Unknown language", user.getName() + " > I dont know this language", true);
             eB.addField("Tipp", "Use: .l help for all languages", true);
