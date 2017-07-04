@@ -23,7 +23,7 @@ public class giveRole extends ListenerAdapter{
 		Member member = e.getMember();
 		EmbedBuilder eB = new EmbedBuilder();
 		
-		if(!msg.getRawContent().startsWith(".r") || e.getAuthor().isBot()) {
+		if(!(msg.getRawContent().startsWith(".r") || msg.getRawContent().startsWith(".role") || msg.getRawContent().startsWith(".R")) || e.getAuthor().isBot()) {
 			return;
 		}
 		

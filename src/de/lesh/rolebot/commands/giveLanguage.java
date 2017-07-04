@@ -32,6 +32,7 @@ public class giveLanguage extends ListenerAdapter {
         //languages.put("vb.net", 0L);
         languages.put("css", 323145260488327170L);
         languages.put("assembler", 323145448993062925L);
+        languages.put("go", 330432150207725578L);
     }
 	
     private void showError(MessageReceivedEvent e)
@@ -48,7 +49,7 @@ public class giveLanguage extends ListenerAdapter {
 		User user = e.getAuthor();
 		Member member = e.getMember();
 		
-        if (!msg.getRawContent().startsWith(".l") || e.getAuthor().isBot()) {
+        if (!(msg.getRawContent().startsWith(".l") || msg.getRawContent().startsWith(".lang") || msg.getRawContent().startsWith(".L")) || e.getAuthor().isBot()) {
             return;
         }
 
@@ -116,6 +117,7 @@ public class giveLanguage extends ListenerAdapter {
         Long roleId = languages.get(split[1].toLowerCase());
         if (roleId == null) {
             eB.addField("ERROR >> Unknown language", user.getName() + " > I dont know this language", true);
+            eB.addField("Tipp", "Use: .l help for all languages", true);
     		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
             eB.setColor(Color.RED);
             e.getChannel().sendMessage(eB.build()).queue();
