@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 import de.lesh.rolebot.user.permittedList;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -42,9 +43,13 @@ public class manageRoles extends ListenerAdapter{
 	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
 		EmbedBuilder eB = new EmbedBuilder();
+		if(e.getAuthor().isBot()){
+			return;
+		}
 		
-        if (msg.getRawContent().matches(".save")|| !e.getAuthor().isBot() || !permittedList.perm.contains(e.getAuthor().getIdLong())) {
-      
+		e.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
+		
+        if (msg.getRawContent().startsWith(".save") && !permittedList.perm.contains(e.getAuthor().getIdLong())) {
 			FileWriter saveFile;
 			BufferedWriter out;
 			try {
@@ -58,19 +63,14 @@ public class manageRoles extends ListenerAdapter{
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			return;
         }
-        if(msg.getRawContent().matches(".add")|| !e.getAuthor().isBot() || !permittedList.perm.contains(e.getAuthor().getIdLong())) {
-        	String[] split = e.getMessage().getRawContent().split("\\s+", 2);
-        	Long[] longSplit = e.getMessage().getRawContent();
+        if(msg.getRawContent().startsWith(".add") && !permittedList.perm.contains(e.getAuthor().getIdLong())) {
+        	String[] split = e.getMessage().getRawContent().split("\\s+", 3);
         	String name = split[1];
-        	String id = split[2];
-        	
+        	long id = Long.parseLong(split[2]);
         	languages.put(name, id);
-        }
-        else {
-        	eB.addField("Fehler", "Du hast nicht die Berechtigung dafür", true);
-        	eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
-        	e.getChannel().sendMessage(eB.build()).queue();
+        	return;
         }
 	}
 }
