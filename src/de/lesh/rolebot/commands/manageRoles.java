@@ -1,12 +1,16 @@
 package de.lesh.rolebot.commands;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import de.lesh.rolebot.user.permittedList;
 import net.dv8tion.jda.core.entities.Message;
@@ -36,20 +40,25 @@ public class manageRoles extends ListenerAdapter{
 	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
 		
-        if (msg.getRawContent().equals(".save")|| e.getAuthor().isBot() || !permittedList.perm.contains(e.getAuthor().getIdLong())) {
-            try {
-				FileOutputStream saveFile = new FileOutputStream(location);
-				ObjectOutputStream oos;
-				oos = new ObjectOutputStream(saveFile);
-				oos.writeObject(languages);
-				oos.close();
-				saveFile.close();
-				System.out.println("[SUCCESFUL] >> Saved languages in " + location);
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-        }
+        if (msg.getRawContent().matches(".save")|| !e.getAuthor().isBot() || !permittedList.perm.contains(e.getAuthor().getIdLong())) {
+      
+				FileWriter saveFile;
+				BufferedWriter out;
+				try {
+					saveFile = new FileWriter(location);
+					out = new BufferedWriter(saveFile);
+					Iterator<Entry<String, Long>> it = languages.entrySet().iterator();
+					
+					while(it.hasNext()) {
+						Entry<String, Long> pairs = it.next();
+				        System.out.println(pairs.getValue());
+				        out.write(pairs.getValue() + "\n");
+					}
+					out.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        }  
 	}
 }
