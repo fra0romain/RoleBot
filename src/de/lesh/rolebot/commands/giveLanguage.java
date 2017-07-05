@@ -32,7 +32,7 @@ public class giveLanguage extends ListenerAdapter {
 		User user = e.getAuthor();
 		Member member = e.getMember();
 		
-        if (!(msg.getRawContent().startsWith(".l") || msg.getRawContent().startsWith(".lang") || msg.getRawContent().startsWith(".L")) || e.getAuthor().isBot()) {
+        if (!(msg.getRawContent().startsWith(".l ") || msg.getRawContent().startsWith(".lang ") || msg.getRawContent().startsWith(".L ")) || e.getAuthor().isBot()) {
             return;
         }
 
@@ -46,7 +46,7 @@ public class giveLanguage extends ListenerAdapter {
             eB.addField("**Solution**", "Infos >> .l help", false);
     		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
             eB.setColor(Color.RED);
-            e.getChannel().sendMessage(eB.build()).queue();
+            e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
             System.out.println("[ERROR] >> Missing variable - Command performed by " + user);
             return;
         }
@@ -58,7 +58,8 @@ public class giveLanguage extends ListenerAdapter {
             eB.addField("Usage", ".l help\n.l (add|remove) <language>", false);
             eB.addField("Available Languages:", String.join(", ", manageRoles.languages.keySet()), false);
     		eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
-            e.getChannel().sendMessage(eB.build()).queue();
+    		eB.setColor(Color.YELLOW);
+            e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
             System.out.println("[INFO] >> Used command: .l help - Command performed by " + user);
             return;
         }
