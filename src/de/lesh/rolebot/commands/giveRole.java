@@ -2,6 +2,9 @@ package de.lesh.rolebot.commands;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import de.lesh.rolebot.lib;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -15,7 +18,6 @@ public class giveRole extends ListenerAdapter{
 	Role beginnerID = null;
 	Role mediumID = null;
 	Role profiID = null;
-	String OS = "os.name";
 	
 	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
@@ -23,7 +25,7 @@ public class giveRole extends ListenerAdapter{
 		Member member = e.getMember();
 		EmbedBuilder eB = new EmbedBuilder();
 		
-		if(!(msg.getRawContent().startsWith(".r") || msg.getRawContent().startsWith(".role") || msg.getRawContent().startsWith(".R")) || e.getAuthor().isBot()) {
+		if(!(msg.getRawContent().startsWith(".r ") || msg.getRawContent().startsWith(".role") || msg.getRawContent().startsWith(".R")) || e.getAuthor().isBot()) {
 			return;
 		}
 		
@@ -31,15 +33,14 @@ public class giveRole extends ListenerAdapter{
 		mediumID = e.getJDA().getRoleById(316125835323113472L);
 		profiID = e.getJDA().getRoleById(316125663226626048L);
 		
-		// role = e.getMessage().getRawContent().split("\\s+", 2)[1];
 		String[] split = e.getMessage().getRawContent().split("\\s+", 2);
 		if (split.length < 2) {
 			eB.setAuthor("ERROR >> Missing variable", null, user.getEffectiveAvatarUrl());
 			eB.addField("", "Der Command braucht eine weitere Variable", false);
 			eB.addField("**Solution**", "Nutzen sie >> .r (beginner|medium|profi)", false);
-			eB.setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), null);
+			eB.setFooter("Rolebot - Made by @Lesh - Version:" + lib.version + " - " + System.getProperty(lib.OS), null);
 			eB.setColor(Color.RED);
-			e.getChannel().sendMessage(eB.build()).queue();
+			e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 			System.out.println("[ERROR] >> Missing variable - Command performed by " + user);
 		    return;
 		}
@@ -84,7 +85,7 @@ public class giveRole extends ListenerAdapter{
 				eB.addField("", "Die angegebene Rolle steht nicht zur auswahl", false);
 				eB.addField("**Solution**", "Nutzen sie >> .r (beginner|medium|profi)", false);
 				eB.setColor(Color.RED);
-				e.getChannel().sendMessage(eB.build()).queue();
+				e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 				System.out.println("[ERROR] >> Wrong role name - Command performed by " + user);
 			}		
 		}

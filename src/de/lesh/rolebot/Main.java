@@ -5,16 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import de.lesh.rolebot.commands.Information;
+import de.lesh.rolebot.commands.forceRole;
 import de.lesh.rolebot.commands.giveLanguage;
 import de.lesh.rolebot.commands.giveRole;
 import de.lesh.rolebot.commands.manageRoles;
-import de.lesh.rolebot.user.permittedList;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.events.ReadyEvent;
 
 public class Main {
 	
@@ -31,7 +30,9 @@ public class Main {
 		jdaB.addEventListener(new giveLanguage());
 		jdaB.addEventListener(new Information());
 		jdaB.addEventListener(new manageRoles());
+		jdaB.addEventListener(new forceRole());
 		loadRoles();
+		lib.setUserPermissions();
 		System.out.println("[SUCCESSFUL] >> Added all EventListeners");
 		jda = jdaB.buildBlocking();
 		System.out.println("[SUCCESSFUL] >> Activating RoleBot");
@@ -41,6 +42,7 @@ public class Main {
 	}
 	
 	public static void loadRoles() {
+		manageRoles.languages.clear();
 		String line;
     	try {
 			BufferedReader reader = new BufferedReader(new FileReader(manageRoles.location));
@@ -50,9 +52,7 @@ public class Main {
         			Long id = Long.parseLong(parts[0]);
         			String name = parts[1];
         			manageRoles.languages.put(name, id);
-        		} else{
-        			System.out.println("[INFO] >> Line ignored: " + line);
-        		}
+        		} else{ System.out.println("[INFO] >> Line ignored: " + line); }
         	}
         	reader.close();
     	} catch (FileNotFoundException e1) {
@@ -60,9 +60,5 @@ public class Main {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-	}
-	
-	public static void onReady(ReadyEvent e){
-		permittedList.perm.add(155704314638106624L);
 	}
 }
