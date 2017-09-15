@@ -1,5 +1,6 @@
 package de.lesh.rolebot;
 
+<<<<<<< HEAD
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +8,12 @@ import java.util.List;
 import java.util.Random;
 
 import net.dv8tion.jda.core.Permission;
+=======
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+public class lib {
+>>>>>>> 83e7b0060b43cb520e634a858980298a40a85b4a
 
 public class lib {
 	public static final String bot_name = "RoleBot";
@@ -19,6 +26,7 @@ public class lib {
 	
 	public static final String prefix = ".";
 	public static int sentMSG = 0;
+<<<<<<< HEAD
 	
 	public static Random rand = new Random();
 	public static Color randomColor() {
@@ -48,5 +56,9 @@ public class lib {
 	public static final void setUserPermissions(){
 		uPerm.add(155704314638106624L);
 	}
+=======
+
+	public static DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+>>>>>>> 83e7b0060b43cb520e634a858980298a40a85b4a
 }
 
