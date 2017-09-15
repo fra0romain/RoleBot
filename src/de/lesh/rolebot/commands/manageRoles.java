@@ -1,20 +1,11 @@
 package de.lesh.rolebot.commands;
 
-<<<<<<< HEAD
 import java.awt.Color;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
-=======
+
 import de.lesh.rolebot.lib;
 import de.lesh.rolebot.user.permittedList;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,29 +13,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
->>>>>>> 83e7b0060b43cb520e634a858980298a40a85b4a
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-<<<<<<< HEAD
-import de.lesh.rolebot.lib;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-=======
 public class manageRoles extends ListenerAdapter {
->>>>>>> 83e7b0060b43cb520e634a858980298a40a85b4a
 
-    final static File langFile = new File("roles.txt");
+	public static String location = "roles.txt";
+    final static File langFile = new File(locatio);
     final static Map<String, Long> languages = new HashMap<>();
 
-<<<<<<< HEAD
-	public static String location = "roles.txt";
-	public final static Map<String, Long> languages = new HashMap<>();
 	
 	public void onMessageReceived(MessageReceivedEvent e){
 		Message msg = e.getMessage();
@@ -103,7 +87,6 @@ public class manageRoles extends ListenerAdapter {
         }
 	}
 }
-=======
     static {
         loadLanguages(langFile);
     }
@@ -237,4 +220,3 @@ public class manageRoles extends ListenerAdapter {
         }
     }
 }
->>>>>>> 83e7b0060b43cb520e634a858980298a40a85b4a
