@@ -1,5 +1,11 @@
 package de.lesh.rolebot.commands;
 
+import java.awt.Color;
+import java.util.Collection;
+import java.util.LinkedList;
+import de.lesh.rolebot.lib;
+import de.lesh.rolebot.user.permittedList;
+import java.io.BufferedWriter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,13 +17,19 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 public class manageRoles extends ListenerAdapter {
 
-    final static File langFile = new File("roles.txt");
+  final static File langFile = new File("roles.txt");
 	public final static Map<String, Long> languages = new HashMap<>();
 
     static {
