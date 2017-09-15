@@ -1,5 +1,8 @@
 package de.lesh.rolebot;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class lib {
 
 	public static final String bot_name = "RoleBot";
@@ -11,5 +14,7 @@ public class lib {
 	
 	public static final String prefix = ".";
 	public static int sentMSG = 0;
+
+	public static DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 }
 
