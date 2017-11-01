@@ -15,7 +15,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.Game;
 
-public class Main {
+public class 	Main {
 	
 	public static JDA jda;
 	public static JDABuilder jdaB = new JDABuilder(AccountType.BOT);
@@ -25,14 +25,13 @@ public class Main {
 		System.out.println("[BOOT] >> Version: " + lib.version);
 		System.out.println("[INFO] >> Checking JDA Version: " + JDAInfo.VERSION);
 		
-		jdaB.setToken(bot_token.BOT_TOKEN).setGame(Game.of(".r (role) // .l (add/remove) (language)")).setAutoReconnect(true);
+		jdaB.setToken(Config.TOKEN).setGame(Game.of(".r (role) // .l (add/remove) (language)")).setAutoReconnect(true);
 		jdaB.addEventListener(new giveRole());
 		jdaB.addEventListener(new giveLanguage());
 		jdaB.addEventListener(new Information());
 		jdaB.addEventListener(new manageRoles());
 		jdaB.addEventListener(new forceRole());
 		loadRoles();
-		lib.setUserPermissions();
 		System.out.println("[SUCCESSFUL] >> Added all EventListeners");
 		jda = jdaB.buildBlocking();
 		System.out.println("[SUCCESSFUL] >> Activating RoleBot");
@@ -55,9 +54,7 @@ public class Main {
         		} else{ System.out.println("[INFO] >> Line ignored: " + line); }
         	}
         	reader.close();
-    	} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
+    	} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}

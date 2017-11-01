@@ -1,44 +1,33 @@
 package de.lesh.rolebot.commands;
 
-import java.awt.Color;
-import java.util.Collection;
-import java.util.LinkedList;
-import de.lesh.rolebot.lib;
-import de.lesh.rolebot.user.permittedList;
-import java.io.BufferedWriter;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
+import de.lesh.rolebot.Config;
 import de.lesh.rolebot.lib;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
 public class manageRoles extends ListenerAdapter {
 
-  final static File langFile = new File("roles.txt");
-	public final static Map<String, Long> languages = new HashMap<>();
+    public final static Map<String, Long> languages = new HashMap<>();
+    final static File langFile = new File("roles.txt");
+    public static String location = "roles.txt";
 
     static {
         loadLanguages(langFile);
     }
 
-    public static String location = "roles.txt";
-    String OS = "os.name";
-
+    @Deprecated
     private static void putDefaultLangs() {
         languages.put("java", 316323991646109698L);
         languages.put("c++", 316324124832301076L);
@@ -128,18 +117,18 @@ public class manageRoles extends ListenerAdapter {
             return;
         }
 
-        if (msg.getRawContent().startsWith(".save") && lib.uPerm.equals(e.getAuthor().getIdLong())) {
+        if (msg.getRawContent().startsWith(".save") && Config.admins.contains(e.getAuthor().getIdLong())) {
             e.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
             boolean success = saveLanguages(langFile);
             e.getTextChannel().sendMessage(new EmbedBuilder()
                     .setAuthor("Language Management", null, e.getAuthor().getEffectiveAvatarUrl())
                     .setTitle("Languages save" + (success ? "d successfully" : " failed."))
                     .setDescription("Read the log for further information")
-                    .setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), e.getJDA().getSelfUser().getEffectiveAvatarUrl())
+                    .setFooter("Rolebot - Made by @Lesh - " + lib.getOsName(), e.getJDA().getSelfUser().getEffectiveAvatarUrl())
                     .build()).queue();
         }
 
-        if (msg.getRawContent().startsWith(".add") && lib.uPerm.equals(e.getAuthor().getIdLong())) {
+        if (msg.getRawContent().startsWith(".add") && Config.admins.contains(e.getAuthor().getIdLong())) {
             e.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
             String[] split = e.getMessage().getRawContent().split("\\s+", 3);
             if (split.length < 3) {
@@ -151,7 +140,7 @@ public class manageRoles extends ListenerAdapter {
             e.getTextChannel().sendMessage(new EmbedBuilder()
                     .setAuthor("Language Management", null, e.getAuthor().getEffectiveAvatarUrl())
                     .setTitle("Language added successfully")
-                    .setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), e.getJDA().getSelfUser().getEffectiveAvatarUrl())
+                    .setFooter("Rolebot - Made by @Lesh - " + lib.getOsName(), e.getJDA().getSelfUser().getEffectiveAvatarUrl())
                     .build()).queue();
         }
     }
