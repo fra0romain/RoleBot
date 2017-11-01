@@ -64,7 +64,7 @@ public class giveLanguage extends ListenerAdapter {
             eB.addField("Available Languages:", String.join(", ", manageRoles.languages.keySet()), false);
     		eB.setFooter("Rolebot - Made by @Lesh - Version:" + lib.version + " - " + System.getProperty(lib.OS), null);
     		eB.setColor(Color.YELLOW);
-            e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
+            e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(1, TimeUnit.MINUTES));
             System.out.println("[INFO] >> Used command: .l help - Command performed by " + user);
             return;
         }

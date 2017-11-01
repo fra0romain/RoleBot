@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Arrays;
 
 import de.lesh.rolebot.lib;
+import de.lesh.rolebot.util.ChannelRegister;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -21,7 +22,7 @@ public class Information extends ListenerAdapter{
 		if(e.getMember().getUser().isBot()){
 			eB.setAuthor(" >> Bot hat den Server betreten", null, lib.bot_image);
 			eB.addField("Bot Name", m.getAsMention(), true);
-			eB.addField("Information", "Der Bot hat automatisch die Bot Rolle bekommen. Dadurch kann er nur in #bot_rush 1 und 2 schreiben", true);
+			eB.addField("Information", "Der Bot hat automatisch die Bot Rolle bekommen. Dadurch kann er in den folgenden Channels schreiben: " + String.join(", ", ChannelRegister.channels.keySet()), true);
 			eB.addField("Problem?", "Melde dich bei @Lesh wenn es probleme mit dem Bot gibt.", true);
 			eB.setColor(Color.YELLOW);
 			eB.setFooter("Rolebot - Made by @Lesh - Version:" + lib.version + " - " + System.getProperty(lib.OS), null);
@@ -33,7 +34,7 @@ public class Information extends ListenerAdapter{
 			eB.setAuthor(" >> User hat den Server betreten", null, lib.bot_image);
 			eB.addField("User", "Hallo " + m.getAsMention() + " // " + m.getEffectiveName(), true);
 			eB.addField("Information", "Lies am besten den #willkommen Channel durch.", true);
-			eB.addField("Get role", "Du kannst dir selbst einen Programmierer Rang geben. Verwende .r (role) für eine Rolle und .l (add/remove) (sprache) für unterschiedliche Programmiersprachen", true);
+			eB.addField("Next step", "Nutze .r <beginner|medium|profi> für deine Einschätzung - Nutze .l <add|remove> (sprache) um deine Sprachen festzulegen", true);
 			eB.setColor(Color.YELLOW);
 			eB.setFooter("Rolebot - Made by @Lesh - Version:" + lib.version + " - " + System.getProperty(lib.OS), null);
 			e.getGuild().getTextChannelById(316325706923507721L).sendMessage(eB.build()).queue();

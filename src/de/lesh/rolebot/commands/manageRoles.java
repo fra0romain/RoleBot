@@ -1,35 +1,25 @@
 package de.lesh.rolebot.commands;
 
-import java.awt.Color;
-import java.util.Collection;
-import java.util.LinkedList;
 import de.lesh.rolebot.lib;
 import de.lesh.rolebot.user.permittedList;
-import java.io.BufferedWriter;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import de.lesh.rolebot.lib;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import java.io.File;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 public class manageRoles extends ListenerAdapter {
 
   final static File langFile = new File("roles.txt");
+  public static String file = System.getProperty("user.dir") + "/";
 	public final static Map<String, Long> languages = new HashMap<>();
 
     static {
@@ -124,11 +114,8 @@ public class manageRoles extends ListenerAdapter {
 
     public void onMessageReceived(MessageReceivedEvent e) {
         Message msg = e.getMessage();
-        if (e.getAuthor().isBot()) {
-            return;
-        }
-
-        if (msg.getRawContent().startsWith(".save") && lib.uPerm.equals(e.getAuthor().getIdLong())) {
+        if (e.getAuthor().isBot()) { return; }
+        if (msg.getRawContent().startsWith(".save") && permittedList.isUserPermitted(e.getAuthor().getIdLong())) {
             e.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
             boolean success = saveLanguages(langFile);
             e.getTextChannel().sendMessage(new EmbedBuilder()
@@ -138,13 +125,10 @@ public class manageRoles extends ListenerAdapter {
                     .setFooter("Rolebot - Made by @Lesh - " + System.getProperty(OS), e.getJDA().getSelfUser().getEffectiveAvatarUrl())
                     .build()).queue();
         }
-
-        if (msg.getRawContent().startsWith(".add") && lib.uPerm.equals(e.getAuthor().getIdLong())) {
+        if (msg.getRawContent().startsWith(".add") && permittedList.isUserPermitted(e.getAuthor().getIdLong())) {
             e.getMessage().delete().queueAfter(5, TimeUnit.SECONDS);
             String[] split = e.getMessage().getRawContent().split("\\s+", 3);
-            if (split.length < 3) {
-                return;
-            }
+            if (split.length < 3) { return; }
             String name = split[1];
             long id = Long.parseLong(split[2]);
             languages.put(name, id);

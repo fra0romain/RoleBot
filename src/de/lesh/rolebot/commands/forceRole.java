@@ -2,6 +2,7 @@ package de.lesh.rolebot.commands;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import de.lesh.rolebot.lib;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -37,7 +38,7 @@ public class forceRole extends ListenerAdapter{
 			eB.addField("**Solution**", "Nutzen sie >> .r (beginner|medium|profi)", false);
 			eB.setFooter("Rolebot - Made by @Lesh - Version:" + lib.version + " - " + System.getProperty(lib.OS), null);
 			eB.setColor(Color.RED);
-			e.getChannel().sendMessage(eB.build()).queue();
+			e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 			System.out.println("[ERROR] >> Missing variable - Command performed by " + user);
 		    return;
 		}
@@ -51,7 +52,7 @@ public class forceRole extends ListenerAdapter{
 				eB.addField("Old Role", this.getOldRole(member), false);
 				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
 				eB.setColor(Color.GREEN);
-				e.getChannel().sendMessage(eB.build()).queue();
+				e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
 				break;
 			}
@@ -62,7 +63,7 @@ public class forceRole extends ListenerAdapter{
 				eB.addField("Old Role", this.getOldRole(member), false);
 				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
 				eB.setColor(Color.GREEN);
-				e.getChannel().sendMessage(eB.build()).queue();
+				e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 				System.out.println("[UPGRADE] >> Added <Medium> to " + member);
 				break;
 			}	
@@ -73,7 +74,7 @@ public class forceRole extends ListenerAdapter{
 				eB.addField("Old Role", this.getOldRole(member), false);
 				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
 				eB.setColor(Color.GREEN);
-				e.getChannel().sendMessage(eB.build()).queue();
+				e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 				System.out.println("[UPGRADE] >> Added <Profi> to " + member);
 				break;
 			}	
@@ -83,7 +84,7 @@ public class forceRole extends ListenerAdapter{
 				eB.addField("**Solution**", "Nutzen sie >> .r (beginner|medium|profi)", false);
 				eB.setFooter("Rolebot - Made by @Lesh - Version:" + lib.version + " - " + System.getProperty(lib.OS), null);
 				eB.setColor(Color.RED);
-				e.getChannel().sendMessage(eB.build()).queue();
+				e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 				System.out.println("[ERROR] >> Wrong role name - Command performed by " + user);
 			}		
 		}

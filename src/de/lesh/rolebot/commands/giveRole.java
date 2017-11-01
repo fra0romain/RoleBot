@@ -54,7 +54,7 @@ public class giveRole extends ListenerAdapter{
 				eB.addField("Old Role", this.getOldRole(member), false);
 				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
 				eB.setColor(Color.GREEN);
-				e.getChannel().sendMessage(eB.build()).queue();
+				e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 				System.out.println("[UPGRADE] >> Added <Beginner> to " + member);
 				break;
 			}
@@ -65,7 +65,7 @@ public class giveRole extends ListenerAdapter{
 				eB.addField("Old Role", this.getOldRole(member), false);
 				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
 				eB.setColor(Color.GREEN);
-				e.getChannel().sendMessage(eB.build()).queue();
+				e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 				System.out.println("[UPGRADE] >> Added <Medium> to " + member);
 				break;
 			}	
@@ -76,7 +76,7 @@ public class giveRole extends ListenerAdapter{
 				eB.addField("Old Role", this.getOldRole(member), false);
 				eB.setFooter("COMMAND: .r | USE: .r (beginner|medium|profi)", null);
 				eB.setColor(Color.GREEN);
-				e.getChannel().sendMessage(eB.build()).queue();
+				e.getChannel().sendMessage(eB.build()).queue(msge -> msge.delete().queueAfter(7, TimeUnit.SECONDS));
 				System.out.println("[UPGRADE] >> Added <Profi> to " + member);
 				break;
 			}	
