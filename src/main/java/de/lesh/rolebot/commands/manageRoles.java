@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +23,11 @@ public class manageRoles extends ListenerAdapter {
     public final static Map<String, Long> languages = new HashMap<>();
     final static File langFile = new File("roles.txt");
     public static String location = "roles.txt";
+    public static String ONLINE_LOCATION = "https://raw.githubusercontent.com/LeshDev/RoleBot/master/roles.txt";
 
     static {
         loadLanguages(langFile);
+        loadOnlineLanguages();
     }
 
     @Deprecated
@@ -46,28 +49,42 @@ public class manageRoles extends ListenerAdapter {
     private static void loadLanguages(File file) {
         createLangFile(file);
         try (Scanner s = new Scanner(file)) {
-            int lineNumber = -1; // Only for debugging/errorstream
-            while (s.hasNextLine()) {
-                lineNumber++;
-                String line = s.nextLine().trim().split("#|//")[0];//Use # or // for line comments
-                String[] parts = line.split(":");
-                if (parts.length != 2) {
-                    System.err.println("[LANGUAGE]Unrecognized line(#" + lineNumber + "): \"" + line + "\". Ignoring");
-                    continue;
-                }
-                if (!parts[0].matches("\\d+")) {
-                    System.err.println("[LANGUAGE]Unrecognized role id(#" + lineNumber + "): \"" + parts[0] + "\"");
-                    continue;
-                }
-                languages.put(parts[1], Long.parseLong(parts[0]));
-                System.out.println("[LANGUAGE]Language \"" + parts[1] + "\" loaded with id " + parts[0] + ".");
-            }
-            System.out.println("[LANGUAGE]Loading done.");
+            loadLanguages(s);
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("[LANGUAGE]Using default langs instead");
             putDefaultLangs();
         }
+    }
+
+    private static void loadOnlineLanguages() {
+        try (Scanner s = new Scanner(new URL(ONLINE_LOCATION).openStream())) {
+            loadLanguages(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("[LANGUAGE]Using default langs instead");
+            putDefaultLangs();
+        }
+    }
+
+    private static void loadLanguages(Scanner s) {
+        int lineNumber = -1; // Only for debugging/errorstream
+        while (s.hasNextLine()) {
+            lineNumber++;
+            String line = s.nextLine().trim().split("#|//")[0];//Use # or // for line comments
+            String[] parts = line.split(":");
+            if (parts.length != 2) {
+                System.err.println("[LANGUAGE]Unrecognized line(#" + lineNumber + "): \"" + line + "\". Ignoring");
+                continue;
+            }
+            if (!parts[0].matches("\\d+")) {
+                System.err.println("[LANGUAGE]Unrecognized role id(#" + lineNumber + "): \"" + parts[0] + "\"");
+                continue;
+            }
+            languages.put(parts[1], Long.parseLong(parts[0]));
+            System.out.println("[LANGUAGE]Language \"" + parts[1] + "\" loaded with id " + parts[0] + ".");
+        }
+        System.out.println("[LANGUAGE]Loading done.");
     }
 
 
